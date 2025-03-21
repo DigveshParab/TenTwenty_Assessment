@@ -1,5 +1,45 @@
 # TenTwenty_Assessment
 
+## Index  
+1. [Project Description](#project-description)  
+2. [App Progress](#app-progress)  
+3. [Motivation Behind Choosing This Stack](#motivation-behind-choosing-this-stack)  
+4. [Challenges I Faced and The Lessons I Learned](#challenges-i-faced-and-the-lessons-i-learned)  
+   - [Setting Up the Project from Scratch](#1-setting-up-the-project-from-scratch)  
+   - [Tailwind CSS Setup & Workflow](#2-tailwind-css-setup--workflow)  
+   - [Understanding "Pixel Perfect"](#3-understanding-pixel-perfect)  
+5. [What I Take Away From This Project](#what-i-take-away-from-this-project)  
+6. [A Note to the Reviewer / HR Department](#a-note-to-the-reviewer--hr-department)  
+
+## App Progress  
+Following are the things I managed to complete:  
+
+1. **Successfully Implemented the UI**  
+   - Matched the **Figma design** for both **desktop and mobile views**.  
+   - Ensured proper responsiveness across different screen sizes.  
+
+2. **Built the Project From Scratch**  
+   - Set up everything manually **without relying on boilerplate code**.  
+   - Understood the **Next.js project structure** better.  
+
+3. **Implemented the First Functionality (Banner with Auto-Image Change & Progress Button)**  
+   - Created a **banner that changes images** after **10 seconds**.  
+   - Implemented a **next button** that shows the duration progress.  
+   - **Creative liberties taken:**  
+     - Couldn’t fully replicate the reference animation but implemented a **custom animation** instead.  
+     - Used **some images from online sources**.  
+     - Assumed some **placeholder text** where necessary.  
+
+4. **Added a Flash Screen When the App Loads or Refreshes**  
+   - Created a **custom animation** for the flash screen.  
+
+5. **Implemented Title & Description Animation for the Second Section**  
+   - Ensured that the **title appears first** before the **description**, as instructed.  
+
+6. **Designed the UI for the Image Slider**  
+   - The layout and styling were **completed**.  
+   - **However, due to time constraints and office commitments, I couldn't implement the full functionality.** 
+
 ## Project Description
 
 This project is a technical assessment for the role of Frontend Developer at TenTwenty. It is a single-page application built using **Next.js** and **Tailwind CSS**. The application is fully responsive, adapting seamlessly to both smaller and larger screens while maintaining a design that adjusts dynamically based on screen type.
