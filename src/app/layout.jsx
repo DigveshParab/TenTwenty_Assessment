@@ -17,6 +17,8 @@ const  RootLayout = ({ children })=> {
        <head>
             {/* icon */}
             <link rel="icon" href="/favicon.png" />
+            {/* title */}
+            title>FarmFresh - by TenTwenty</title>
             {/* descr */}
             <meta name="description" content="TenTwenty - High-quality products for your everyday needs. Shop now for the best deals!" />
             {/* social */}
