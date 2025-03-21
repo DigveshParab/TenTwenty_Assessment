@@ -14,6 +14,15 @@ const workSans = Work_Sans({
 const  RootLayout = ({ children })=> {
   return (
     <html lang="en" className={workSans.variable}>
+       <head>
+            {/* icon */}
+            <link rel="icon" href="/favicon.png" />
+            {/* descr */}
+            <meta name="description" content="TenTwenty - High-quality products for your everyday needs. Shop now for the best deals!" />
+            {/* social */}
+            <meta property="og:title" content="TenTwenty" />
+            <meta property="og:description" content="Premium quality products at the best prices." />
+      </head>
       <body>{children}</body>
     </html>
   );
