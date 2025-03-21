@@ -116,9 +116,9 @@ const Banner = () => {
                   alt="Next Image Preview"
                   quality={90}
                   layout="fill"
-                  loading='lazy'
                   objectFit="cover"
                   objectPosition="top left"
+                  priority
                   className="min-w-[100%] min-h-[100%]"
                 />
                 <div className="absolute">
