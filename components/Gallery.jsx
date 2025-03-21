@@ -1,19 +1,32 @@
+"use client"
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Gallery = () => {
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const onScroll = () => {
+          if (window.scrollY >= 70) setVisible(true);
+        };
+    
+        window.addEventListener("scroll", onScroll);
+        return () => window.removeEventListener("scroll", onScroll);
+      }, []);
+
+      
   return (
     <div className='w-full h-auto flex flex-col justify-center'>
         <div className='w-full h-[320px] mt-20 flex flex-col justify-center items-center md:mt-26'>
             {/* title */}
             <div className='w-full flex justify-center items-center text-center'>
-                <h2 className='text-[27px] text-black mb-4 md:text-7xl md:mb-10 md:mt-30 fade-in'>Quality Products</h2>
+                <h2 className={`text-[27px] text-black mb-4 md:text-7xl md:mb-10 md:mt-30 transition-all duration-1000 ease-in-out   ${visible ? "opacity-100" : "opacity-0"}`}>Quality Products</h2>
                 {/* if possible remove mr-6 */}
             </div>
             {/* description */}
             <div className='w-full flex justify-center text-center'>
                 {/* if possible remove mr-6 */}
-                <p className='w-[77%] md:w-[55%] leading-[20px] md:text-[32px]  md:mt-8 md:leading-[40px] text-gray-500 fade-in'>  
+                <p className={`w-[77%] md:w-[55%] leading-[20px] md:text-[32px]  md:mt-8 md:leading-[40px] text-gray-500 transition-all duration-1000 ease-in-out   ${visible ? "opacity-100" : "opacity-0"}`}>  
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <br className='hidden md:block'/>
                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi 
