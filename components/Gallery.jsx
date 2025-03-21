@@ -56,7 +56,6 @@ const Gallery = () => {
                         alt="Previous"
                         layout="fill"
                         objectFit="cover"
-                        loading='lazy'
                     />
                 </div>
 
@@ -72,8 +71,6 @@ const Gallery = () => {
                         alt="Current"
                         layout="fill"
                         objectFit="cover"
-                        loading='lazy'
-
                     />
                 </div>
 
@@ -89,8 +86,6 @@ const Gallery = () => {
                         alt="Next"
                         layout="fill"
                         objectFit="cover"
-                        loading='lazy'
-
                     />
                 </div>
 
