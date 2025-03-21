@@ -114,11 +114,11 @@ const Banner = () => {
                 <Image
                   src={bannerImages[(currentIndex + 1) % bannerImages.length].src} 
                   alt="Next Image Preview"
-                  quality={100}
+                  quality={90}
                   layout="fill"
+                  loading='lazy'
                   objectFit="cover"
                   objectPosition="top left"
-                  priority
                   className="min-w-[100%] min-h-[100%]"
                 />
                 <div className="absolute">
@@ -141,4 +141,5 @@ const Banner = () => {
   };
   
   export default Banner;
+  
   
