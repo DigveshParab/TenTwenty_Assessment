@@ -9,7 +9,9 @@
    - [Tailwind CSS Setup & Workflow](#2-tailwind-css-setup--workflow)  
    - [Understanding "Pixel Perfect"](#3-understanding-pixel-perfect)  
 5. [What I Take Away From This Project](#what-i-take-away-from-this-project)  
-6. [A Note to the Reviewer / HR Department](#a-note-to-the-reviewer--hr-department)  
+6. [A Note to the Reviewer / HR Department](#a-note-to-the-reviewer--hr-department)
+7. [Using This Project](#using-this-project)  
+ 
 
 ## App Progress  
 Following are the things I managed to complete:  
@@ -116,5 +118,22 @@ Thank you for reaching out to me and providing me with this **opportunity**. I c
 If you decide to **give me this chance**, I can assure you of one thing: **with every challenge that comes my way at TenTwenty, I will mold myself and only get better from this point forward**. I have the **hunger to grow, improve, and take things one step at a time**.  
 
 I appreciate your time and consideration. Looking forward to the possibility of working with your team!  
+
+
+## Using This Project
+
+To run this project locally, follow these steps:
+
+```bash
+git clone <repository-url>
+cd tentwenty-assessment
+npm install
+npm run dev
+```
+
+Then, open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
+
+---
+
 
 
