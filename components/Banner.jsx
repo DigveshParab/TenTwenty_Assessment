@@ -6,35 +6,86 @@ import { bannerImages } from '../data/bannerData';
 const Banner = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [progressKey, setProgressKey] = useState(0); // Key to reset animation
-  
+    // for loading border
+    const [borderStage, setBorderStage] = useState(0);
+
+    // image animation
+    const [imageAnimate, setImageAnimate] = useState(false);
+
     useEffect(() => {
+      // reset border glow when image changes
+      setBorderStage(0);
+
       const interval = setInterval(() => {
         changeImage();
-      }, 10000); // Change every 10 seconds
+      }, 11000); // Change every 11 seconds
   
       return () => clearInterval(interval);
     }, [currentIndex]);
   
 
+    // border update
+    useEffect(() => {
+        const borderUpdate = setInterval(() => {
+            setBorderStage((prev) => (prev < 4 ? prev + 1 : prev));
+        }, 2500); // Update every 2.5 seconds
+
+        return () => clearInterval(borderUpdate);
+    }, [currentIndex]); 
+
+  
+    const borderClasses = [
+      "",
+      "border-t-[6px] md:border-t-[10px] border-white rounded-t-md",  // Top
+      "border-t-[6px] border-r-[6px] md:border-t-[10px] md:border-r-[10px] border-white rounded-tr-md",// Top + Right 
+      "border-t-[6px] border-r-[6px] border-b-[6px] md:border-t-[10px] md:border-r-[10px] md:border-b-[10px] border-white rounded-tr-md rounded-br-md",  // Top + Right + Bottom 
+      "border-[6px] md:border-[10px] border-white rounded-md", // Top + Right + Bottom + left
+  ];
+  
+
     const changeImage = () => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
-      setProgressKey((prevKey) => prevKey + 1); // animation reset on change of this key
+      // animate when image i=changes
+      setImageAnimate(true); // Start animation
+
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
+        setProgressKey((prevKey) => prevKey + 1); // animation reset on change of this key
+        setBorderStage(0)
+        setImageAnimate(false); // Reset after animation
+      }, 500); // Match CSS duration
     };
   
     return (
       <div className="relative w-screen h-190 md:h-300">
         {/* Background Image */}
-        <div className="absolute inset-0 ">
+        <div className="absolute inset-0 flex items-center justify-center ">
           <Image
             src={bannerImages[currentIndex].src}
-            alt="Background"
+            alt="Background Top"
             quality={100}
             layout="fill"
             objectFit="cover"
             objectPosition="top left"
             priority
-            className="mt-10 md:-mt-0 contrast-120 "
+            className={`absolute w-full h-1/2 transition-all duration-1000 ${
+              imageAnimate ? 'translate-x-[5%] ' : 'translate-x-0 '
+            }`}
           />
+
+          {/* image under */}
+          <Image
+            src={bannerImages[currentIndex].src}
+            alt="Background Bottom"
+            quality={100}
+            layout="fill"
+            objectFit="cover"
+            objectPosition="bottom left"
+            priority
+            className={`absolute w-full h-1/2 bottom-0 transition-all duration-1000 ${
+              imageAnimate ? 'translate-x-[-5%] ' : 'translate-x-0 '
+            }`}
+          />
+
         </div>
   
         {/* Text Section */}
@@ -48,12 +99,16 @@ const Banner = () => {
   
           {/* Next Image Preview */}
           <div className="w-[300px] h-[100px] text-white mt-42 flex flex-row justify-between md:w-[450px] md:h-[160px] md:mt-58">
-            <div
-                key={progressKey} // Reset animation when changed
-                className="relative w-[40%] h-full border border-white border-opacity-30 flex justify-center items-center p-2"
+          <div className="relative w-[40%] h-full flex justify-center items-center">  
+              {/* Absolute Border Effect */}
+              <div className={`absolute w-[105%] h-[110%] border-1 border-white ${borderClasses[borderStage]} transition-all duration-700 ease-in pointer-events-none`} />
+              
+              {/* Image Container (No Border Here) */}
+              <div
+                key={progressKey}
+                className="relative w-[80%] h-[85%] flex items-center justify-center cursor-pointer"
                 onClick={changeImage}
-            >
-              <div className="w-[80%] h-[85%] relative flex items-center justify-center cursor-pointer hover:">
+              >
                 <Image
                   src={bannerImages[(currentIndex + 1) % bannerImages.length].src} 
                   alt="Next Image Preview"
@@ -62,10 +117,14 @@ const Banner = () => {
                   objectFit="cover"
                   objectPosition="top left"
                   priority
+                  className="min-w-[100%] min-h-[100%]"
                 />
-                <div className="absolute"><p className="text-white">NEXT</p></div>
+                <div className="absolute">
+                  <p className="text-white">NEXT</p>
+                </div>
               </div>
             </div>
+
   
             {/* Progress Indicator */}
             <div className="w-[50%] h-full relative flex justify-start items-center mx-1 mt-2 md:-mx-1">
