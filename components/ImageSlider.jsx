@@ -22,7 +22,7 @@ const ImageSlider = ({galleryImages}) => {
     useEffect(() => {
         if (emblaApi && emblaApi.scrollSnapList().length > 0) {
             emblaApi.reInit();
-            emblaApi.scrollTo(2)
+            emblaApi.scrollTo(1)
         }
     }, [emblaApi]);
   
