@@ -91,9 +91,11 @@ const Banner = () => {
         {/* Text Section */}
         <div className="w-[300px] h-200 z-10 absolute top-62 left-8 md:w-[80%] md:top-117 md:left-44">
           <div className="text-white">
-            <p className="md:text-xl tracking-[0.7px]">{bannerImages[currentIndex].title}</p>
-            <h1 className="text-[39px] tracking-[2.5px] leading-[40px] mt-4 md:text-[79px] md:w-[700px] md:mt-9 md:tracking-[3.5px] md:leading-[85px]">
-                {bannerImages[currentIndex].subtitle}
+            <p className={`md:text-xl tracking-[0.7px] transition-opacity duration-700 ease-in-out ${imageAnimate ? "opacity-0" : "opacity-100"}`}>
+              {bannerImages[currentIndex].title}
+            </p>
+            <h1 className={`text-[39px] tracking-[2.5px] leading-[40px] mt-4 md:text-[79px] md:w-[700px] md:mt-9 md:tracking-[3.5px] md:leading-[85px] transition-opacity duration-700 ease-in-out ${imageAnimate ? "opacity-0" : "opacity-100"}`}>
+              {bannerImages[currentIndex].subtitle}
             </h1>
           </div>
   
@@ -112,7 +114,7 @@ const Banner = () => {
                 <Image
                   src={bannerImages[(currentIndex + 1) % bannerImages.length].src} 
                   alt="Next Image Preview"
-                  quality={100}
+                  quality={90}
                   layout="fill"
                   objectFit="cover"
                   objectPosition="top left"
@@ -139,4 +141,5 @@ const Banner = () => {
   };
   
   export default Banner;
+  
   
