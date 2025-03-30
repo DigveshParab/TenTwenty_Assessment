@@ -1,125 +1,181 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { bannerImages } from '../data/bannerData';
+import {AnimatePresence, motion} from "framer-motion"
 
-const Banner = () => {
+const Banner = ({bannerImages}) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [progressKey, setProgressKey] = useState(0); // Key to reset animation
-    // for loading border
-    const [borderStage, setBorderStage] = useState(0);
-
+    const [textAnimate,setTextAnimate] = useState(0)
     // image animation
     const [imageAnimate, setImageAnimate] = useState(false);
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+
 
     useEffect(() => {
-      // reset border glow when image changes
-      setBorderStage(0);
-
       const interval = setInterval(() => {
         changeImage();
-      }, 11000); // Change every 11 seconds
+      }, 9800); // Change every 11 seconds
   
       return () => clearInterval(interval);
     }, [currentIndex]);
   
 
-    // border update
     useEffect(() => {
-        const borderUpdate = setInterval(() => {
-            setBorderStage((prev) => (prev < 4 ? prev + 1 : prev));
-        }, 2500); // Update every 2.5 seconds
-
-        return () => clearInterval(borderUpdate);
-    }, [currentIndex]); 
-
-  
-    const borderClasses = [
-      "",
-      "border-t-[6px] md:border-t-[10px] border-white rounded-t-md",  // Top
-      "border-t-[6px] border-r-[6px] md:border-t-[10px] md:border-r-[10px] border-white rounded-tr-md",// Top + Right 
-      "border-t-[6px] border-r-[6px] border-b-[6px] md:border-t-[10px] md:border-r-[10px] md:border-b-[10px] border-white rounded-tr-md rounded-br-md",  // Top + Right + Bottom 
-      "border-[6px] md:border-[10px] border-white rounded-md", // Top + Right + Bottom + left
-  ];
-  
-
+      // Set to false after first animation completes
+      setTimeout(() => setIsFirstLoad(false), 1200); // Adjust time based on splash screen duration
+    }, []);
+    
     const changeImage = () => {
-      // animate when image i=changes
-      setImageAnimate(true); // Start animation
 
-      setTimeout(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
-        setProgressKey((prevKey) => prevKey + 1); // animation reset on change of this key
-        setBorderStage(0)
-        setImageAnimate(false); // Reset after animation
-      }, 500); // Match CSS duration
+        setImageAnimate(true)
+        setTextAnimate(prev=>prev + 1)
+        setProgressKey((prevKey) => prevKey + 1);
+
+        setTimeout(() => {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
+            setImageAnimate(false)
+        }, 1200); // Adjusted timing
     };
-  
+    // todo: work on proper syncing of the animations and timing
+
     return (
-      <div className="relative w-screen h-190 md:h-300">
+      <div className="relative w-screen h-190 md:h-280" data-testid="banner-component">
         {/* Background Image */}
         <div className="absolute inset-0 flex items-center justify-center ">
-          <Image
-            src={bannerImages[currentIndex].src}
-            alt="Background Top"
-            quality={100}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="top left"
-            priority
-            className={`absolute w-full h-1/2 transition-all duration-1000 ${
-              imageAnimate ? 'translate-x-[5%] ' : 'translate-x-0 '
-            }`}
-          />
-
-          {/* image under */}
-          <Image
-            src={bannerImages[currentIndex].src}
-            alt="Background Bottom"
-            quality={100}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="bottom left"
-            priority
-            className={`absolute w-full h-1/2 bottom-0 transition-all duration-1000 ${
-              imageAnimate ? 'translate-x-[-5%] ' : 'translate-x-0 '
-            }`}
-          />
-
+          <AnimatePresence mode='wait'>
+            <motion.img
+              key={`top-${currentIndex}`}
+              initial={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 50%, 0% 50%)", y: 0 }}
+              animate={imageAnimate &&  {clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)", y: 0} }
+              transition={{ duration: 1, ease: "easeInOut" }}
+              className='absolute w-screen h-full transition-all duration-1000 object-cover  md:scale-102'
+              src={bannerImages[currentIndex].src}
+              alt='background top'
+            />
+            <motion.img
+              key={`bottom-${currentIndex}`}
+              initial={{ clipPath: "polygon(0% 50%, 100% 50%, 100% 100%, 0% 100%)", y: 0 }}
+              animate={imageAnimate && {clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", y: 0 }}
+              transition={{ duration: 1, ease: "easeInOut" }}      
+              className='absolute w-screen h-full transition-all duration-1000 object-cover md:scale-102'
+              src={bannerImages[currentIndex].src}
+              alt='background top'
+            />
+            <motion.img
+              data-testid="background-image"
+              key={`next-${currentIndex}`}
+              initial={{ opacity: 1, scale: 0.99 }}
+              animate={imageAnimate && { opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="absolute inset-0 w-full h-full object-cover bg-center md:scale-102 -z-10"
+              src={bannerImages[(currentIndex + 1) % bannerImages.length].src}
+              alt='background top'
+            />
+          </AnimatePresence>
         </div>
   
         {/* Text Section */}
-        <div className="w-[300px] h-200 z-10 absolute top-62 left-8 md:w-[80%] md:top-117 md:left-44">
+        <div className="w-[300px] h-200 z-10 absolute top-62 left-8 md:w-[80%] md:top-110 md:left-44">
           <div className="text-white">
-            <p className={`md:text-xl tracking-[0.7px] transition-opacity duration-700 ease-in-out ${imageAnimate ? "opacity-0" : "opacity-100"}`}>
+            <motion.h1
+              data-testid="banner-title"
+              key={`title-${textAnimate}`} 
+              initial={{ scale:1,opacity: 0, y: 10 }}
+              animate={{ scale:1,opacity: 1, y: 10 }}
+              transition={isFirstLoad ? { duration: 2, ease: "easeOut",delay: 4 }:{ duration: 2, ease: "easeInOut"}}
+              className="md:text-xl tracking-[0.7px] mb-2"
+            >
               {bannerImages[currentIndex].title}
-            </p>
-            <h1 className={`text-[39px] tracking-[2.5px] leading-[40px] mt-4 md:text-[79px] md:w-[700px] md:mt-9 md:tracking-[3.5px] md:leading-[85px] transition-opacity duration-700 ease-in-out ${imageAnimate ? "opacity-0" : "opacity-100"}`}>
+            </motion.h1>
+            
+            <motion.h1
+              data-testid="banner-subtitle"
+              key={`subtitle-${textAnimate}`} 
+              initial={isFirstLoad ? { scale: 1.3, y: "-50%"}:{ scale:1,opacity: 0, y: 10 }}
+              animate={isFirstLoad ? { scale: 1, y: "0%" }:{ scale:1,opacity: 1, y: 10 }}
+              transition={isFirstLoad ? { duration: 2, ease: "easeOut",delay: 4 }:{ duration: 2, ease: "easeInOut"}}
+              className="text-[39px] tracking-[2.5px] leading-[40px] mt-4 md:text-[79px] md:w-[700px] md:mt-9 md:tracking-[3.5px] md:leading-[85px]"
+            >
               {bannerImages[currentIndex].subtitle}
-            </h1>
+            </motion.h1>
           </div>
   
           {/* Next Image Preview */}
-          <div className="w-[300px] h-[100px] text-white mt-42 flex flex-row justify-between md:w-[450px] md:h-[160px] md:mt-58">
+          <div className="w-[260px] h-[100px] text-white mt-42 flex flex-row justify-between md:w-[400px] md:h-[160px] md:mt-48">
           <div className="relative w-[40%] h-full flex justify-center items-center">  
-              {/* Absolute Border Effect */}
-              <div className={`absolute w-[105%] h-[110%] border-1 border-white ${borderClasses[borderStage]} transition-all duration-700 ease-in pointer-events-none`} />
-              
+                  {/* Top Border */}
+                  <motion.div
+                    key={`top-${progressKey}`}
+                    className="absolute top-0 left-0 h-0 w-full border-t-6 md:border-t-8 border-white"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 2.5, ease: "easeInOut" }}
+                  />
+
+                  {/* Right Border */}
+                  <motion.div
+                    key={`right-${progressKey}`}
+                    className="absolute top-0 right-0 w-0 h-full border-r-6 md:border-r-8 border-white"
+                    initial={{ height: 0 }}
+                    animate={{ height: "100%" }}
+                    transition={{ duration: 2.5, ease: "easeInOut", delay: 2.5 }}
+                  />
+
+                  {/* Bottom Border */}
+                  <motion.div
+                    key={`bottom-${progressKey}`}
+                    className="absolute bottom-0 right-0 h-0 w-full border-b-6 md:border-b-8 border-white rotate-180"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 2.5, ease: "easeInOut", delay: 5 }}
+                  />
+
+                  {/* Left Border */}
+                  <motion.div
+                    key={`left-${progressKey}`}
+                    className="absolute bottom-0 left-0 w-0 h-full border-l-6 md:border-l-8 border-white rotate-180"
+                    initial={{ height: 0 }}
+                    animate={{ height: "100%" }}
+                    transition={{ duration: 2.5, ease: "easeInOut", delay: 7.5 }}
+                  />
+
+
               {/* Image Container (No Border Here) */}
               <div
+                data-testid="next-image-btn-component"
                 key={progressKey}
-                className="relative w-[80%] h-[85%] flex items-center justify-center cursor-pointer"
+                className="relative w-[60%] h-[60%] flex items-center justify-center cursor-pointer"
                 onClick={changeImage}
               >
-                <Image
-                  src={bannerImages[(currentIndex + 1) % bannerImages.length].src} 
-                  alt="Next Image Preview"
-                  quality={90}
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="top left"
-                  priority
-                  className="min-w-[100%] min-h-[100%]"
+                
+                <motion.img
+                  key={`top-${currentIndex}`}
+                  initial={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 50%, 0% 50%)", y: 0 }}
+                  animate={imageAnimate &&  {clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)", y: 0} }
+                  transition={{ duration: 1, ease: "easeInOut" }}
+                  className='absolute w-screen h-full transition-all duration-1000 object-cover scale-105'
+                  src={bannerImages[(currentIndex + 1) % bannerImages.length].src}
+                  alt='background top'
+                />
+                <motion.img
+                  key={`bottom-${currentIndex}`}
+                  initial={{ clipPath: "polygon(0% 50%, 100% 50%, 100% 100%, 0% 100%)", y: 0 }}
+                  animate={imageAnimate && {clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", y: 0 }}
+                  transition={{ duration: 1, ease: "easeInOut" }}      
+                  className='absolute w-screen h-full transition-all duration-1000 object-cover scale-105'
+                  src={bannerImages[(currentIndex + 1) % bannerImages.length].src}
+                  alt='background top'
+                />
+                <motion.img
+                  data-testid="next-btn-image"
+                  key={`next-${currentIndex}`}
+                  initial={{ opacity: 1, scale: 0.98 }}
+                  animate={imageAnimate && { opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  className="absolute inset-0 w-full h-full object-cover bg-center scale-105 -z-10"
+                  src={bannerImages[(currentIndex + 2) % bannerImages.length].src}
+                  alt='background top'
                 />
                 <div className="absolute">
                   <p className="text-white">NEXT</p>
@@ -141,5 +197,4 @@ const Banner = () => {
   };
   
   export default Banner;
-  
   
