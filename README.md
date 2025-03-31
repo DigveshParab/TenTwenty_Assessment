@@ -1,4 +1,4 @@
-# 🚀 Project: TenTwenty
+# 🚀 Project Documentation - Frontend Assessment Redevelopment
 
 ### 🛠 Tech Stack:
 Next.js | Tailwind CSS | Framer Motion | Jest | React Testing Library | Embla Carousel
